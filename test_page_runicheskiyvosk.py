@@ -22,13 +22,13 @@ class TestRvPage(Base):
         'runa_5', 'runa_6', 'runa_7'
     ]
 
-    # тест открытие страницы. урл соответстовует
+    # тест открытие страницы. урл соответствует
     def test_open_page(self):
         self.open_page(self.url)
         assert self.browser.current_url == self.url,\
         "урл не соответствует ожидаемому"
 
-    # поле селект присутствует
+    # тест поле селект присутствует
     @pytest.mark.parametrize('runa', runa)
     def test_must_see_seven_fields(self, runa):
         selector = '#id_' + f"{runa}"
@@ -36,7 +36,7 @@ class TestRvPage(Base):
         field_number = f"{runa}"[-1]
         assert  self.element_is_present(field),"поле {} не найдено".format(field_number)
 
-    # поле содержит 24 значения селект
+    # тест поле содержит 24 значения селект
     @pytest.mark.parametrize('runa', runa)
     def test_total_values_select_field(self, runa):
         selector = '#id_' + f"{runa}"
@@ -47,6 +47,21 @@ class TestRvPage(Base):
         spisok = len(select.options)
         assert spisok - 1 == 24, 'выпадающий список поля {} не совпадает'.format(field_number)
 
+    # тест кнопка 'отправить' присутствует
+    def test_sould_see_button_send(self):
+        field = (By.CSS_SELECTOR, "button")
+        assert self.element_is_present(field), "кнопка 'отправить' отстутствует"
+
+    # туст поле ошибок отсутствует
+    def test_field_errors_not_present(self):
+        field = (By.CSS_SELECTOR, ".errorlist")
+        assert not self.element_is_present(field), "поле ошибок не должно отображаться"
+
+    
+    # метод класса найти элемент и "нажать" на него
+    def push_the_button(self, field):
+        element = self.browser.find_element(*field)
+        element.click()
 
     # метод класса для проверки наличия элемента на странице
     def element_is_present(self, field):
