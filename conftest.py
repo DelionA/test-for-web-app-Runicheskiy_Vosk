@@ -2,7 +2,7 @@ import pytest
 from selenium import webdriver
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def browser():
     print('\nStart Firefox browser for test...')
     browser = webdriver.Firefox()
